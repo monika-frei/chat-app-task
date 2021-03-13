@@ -1,8 +1,8 @@
 import React from "react";
 import { StyleSheet, View, Text, FlatList, Dimensions } from "react-native";
-import RoomView from "./RoomView";
+import RoomListItem from "./RoomListItem/RoomListItem";
 import { useQuery } from "@apollo/client";
-import { GET_ROOMS } from "./queries/index";
+import { GET_ROOMS } from "../queries/index";
 
 const HomeView = ({ navigation }) => {
   const { loading, error, data } = useQuery(GET_ROOMS);
@@ -37,7 +37,7 @@ const HomeView = ({ navigation }) => {
         <FlatList
           data={data.usersRooms.rooms}
           renderItem={({ item }) => (
-            <RoomView item={item} navigation={navigation} />
+            <RoomListItem item={item} navigation={navigation} />
           )}
         />
       </View>

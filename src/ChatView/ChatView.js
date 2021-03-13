@@ -1,9 +1,10 @@
 import React from "react";
 import { StyleSheet, View, Text, FlatList, Dimensions } from "react-native";
 import { useQuery } from "@apollo/client";
-import { GET_MESSAGES } from "./queries/index";
+import { GET_MESSAGES } from "../queries/index";
+import Chat from "./Chat/Chat";
 
-const Chat = ({ route }) => {
+const ChatView = ({ route }) => {
   const id = route.params.id;
   const { loading, error, data } = useQuery(GET_MESSAGES, {
     variables: { id: id },
@@ -23,18 +24,7 @@ const Chat = ({ route }) => {
       </View>
     );
   }
-  return (
-    <View>
-      <FlatList
-        data={data.room.messages}
-        renderItem={({ item }) => (
-          <View>
-            <Text>{item.body}</Text>
-          </View>
-        )}
-      />
-    </View>
-  );
+  return <Chat data={data} />;
 };
 
-export default Chat;
+export default ChatView;

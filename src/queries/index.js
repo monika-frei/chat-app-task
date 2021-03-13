@@ -50,3 +50,21 @@ export const GET_MESSAGES = gql`
     }
   }
 `;
+
+export const SEND_MESSAGE = gql`
+  mutation Message($text: String!, $roomId: String!) {
+    sendMessage(body: $text, roomId: $roomId) {
+      body
+      id
+      insertedAt
+      user {
+        email
+        firstName
+        lastName
+        profilePic
+        id
+        role
+      }
+    }
+  }
+`;
