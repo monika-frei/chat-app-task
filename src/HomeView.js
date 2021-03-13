@@ -1,11 +1,49 @@
 import React from "react";
 import { StyleSheet, View, Text, FlatList, Dimensions } from "react-native";
 import RoomView from "./RoomView";
+import { useQuery, gql } from "@apollo/client";
+
+const GET_ROOMS = gql`
+  {
+    usersRooms {
+      user {
+        email
+        firstName
+        id
+        lastName
+        profilePic
+        role
+      }
+      rooms {
+        id
+        name
+        roomPic
+      }
+    }
+  }
+`;
 
 const HomeView = () => {
-  const rooms = [1, 2, 3, 4, 5];
+  const { loading, error, data } = useQuery(GET_ROOMS);
 
-  setDimensions = () => {};
+  const rooms = [];
+
+  if (loading) {
+    return (
+      <View style={styles.messageContainer}>
+        <Text style={styles.messageText}>Loading...</Text>
+      </View>
+    );
+  }
+
+  if (error) {
+    return (
+      <View style={styles.messageContainer}>
+        <Text style={styles.messageText}>Error: ${error}</Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -18,8 +56,8 @@ const HomeView = () => {
         ]}
       >
         <FlatList
-          data={rooms}
-          renderItem={({ item }) => <RoomView number={item} />}
+          data={data.usersRooms.rooms}
+          renderItem={({ item }) => <RoomView title={item.name} />}
         />
       </View>
     </View>
@@ -47,6 +85,15 @@ const styles = StyleSheet.create({
     paddingVertical: 50,
     borderTopRightRadius: 20,
     borderTopLeftRadius: 20,
+  },
+  messageContainer: {
+    marginTop: 50,
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  messageText: {
+    color: "#EAEAF4",
   },
 });
 

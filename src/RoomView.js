@@ -1,10 +1,10 @@
 import React from "react";
 import { StyleSheet, View, Text, Button } from "react-native";
 
-const RoomView = ({ number }) => {
+const RoomView = ({ title }) => {
   return (
     <View style={styles.container}>
-      <Button title={`Room ${number}`} />
+      <Button title={title} />
     </View>
   );
 };
