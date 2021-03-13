@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { StyleSheet, View, Text, Button } from "react-native";
 
-const RoomView = ({ item, navigation }) => {
+const RoomListItem = ({ item, navigation }) => {
   return (
     <View style={styles.container}>
       <Button
@@ -22,4 +22,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default RoomView;
+export default RoomListItem;

@@ -8,10 +8,15 @@ import {
   InMemoryCache,
   ApolloProvider,
   createHttpLink,
+  split,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
-import HomeView from "./src/HomeView";
-import Chat from "./src/Chat";
+import { hasSubscription } from "@jumpn/utils-graphql";
+import * as AbsintheSocket from "@absinthe/socket";
+import { createAbsintheSocketLink } from "@absinthe/socket-apollo-link";
+import { Socket as PhoenixSocket } from "phoenix";
+import HomeView from "./src/HomeView/HomeView";
+import ChatView from "./src/ChatView/ChatView";
 
 const httpLink = createHttpLink({
   uri: "https://chat.thewidlarzgroup.com/api/graphql",
@@ -30,8 +35,30 @@ const authLink = setContext((_, { headers }) => {
 
 const authedHttpLink = authLink.concat(httpLink);
 
+const phoenixSocket = new PhoenixSocket(
+  "wss://chat.thewidlarzgroup.com/socket",
+  {
+    params: () => {
+      if (token) {
+        return {
+          token: token,
+        };
+      } else {
+        return {};
+      }
+    },
+  }
+);
+const absintheSocket = AbsintheSocket.create(phoenixSocket);
+const wsLink = createAbsintheSocketLink(absintheSocket);
+const splitLink = split(
+  (operation) => hasSubscription(operation.query),
+  wsLink,
+  authedHttpLink
+);
+
 const client = new ApolloClient({
-  link: authedHttpLink,
+  link: splitLink,
   cache: new InMemoryCache(),
 });
 
@@ -45,7 +72,7 @@ export default function App() {
           <Stack.Screen name="Home" component={HomeView} />
           <Stack.Screen
             name="ChatRoom"
-            component={Chat}
+            component={ChatView}
             options={({ route }) => ({
               title: route.params.title,
               id: route.params.id,
