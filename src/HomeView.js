@@ -1,32 +1,11 @@
 import React from "react";
 import { StyleSheet, View, Text, FlatList, Dimensions } from "react-native";
 import RoomView from "./RoomView";
-import { useQuery, gql } from "@apollo/client";
+import { useQuery } from "@apollo/client";
+import { GET_ROOMS } from "./queries/index";
 
-const GET_ROOMS = gql`
-  {
-    usersRooms {
-      user {
-        email
-        firstName
-        id
-        lastName
-        profilePic
-        role
-      }
-      rooms {
-        id
-        name
-        roomPic
-      }
-    }
-  }
-`;
-
-const HomeView = () => {
+const HomeView = ({ navigation }) => {
   const { loading, error, data } = useQuery(GET_ROOMS);
-
-  const rooms = [];
 
   if (loading) {
     return (
@@ -57,7 +36,9 @@ const HomeView = () => {
       >
         <FlatList
           data={data.usersRooms.rooms}
-          renderItem={({ item }) => <RoomView title={item.name} />}
+          renderItem={({ item }) => (
+            <RoomView item={item} navigation={navigation} />
+          )}
         />
       </View>
     </View>

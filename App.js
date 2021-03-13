@@ -1,4 +1,7 @@
+import "react-native-gesture-handler";
 import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
 import { StyleSheet, Text, View } from "react-native";
 import {
   ApolloClient,
@@ -8,6 +11,7 @@ import {
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import HomeView from "./src/HomeView";
+import Chat from "./src/Chat";
 
 const httpLink = createHttpLink({
   uri: "https://chat.thewidlarzgroup.com/api/graphql",
@@ -31,12 +35,24 @@ const client = new ApolloClient({
   cache: new InMemoryCache(),
 });
 
+const Stack = createStackNavigator();
+
 export default function App() {
   return (
     <ApolloProvider client={client}>
-      <View style={styles.container}>
-        <HomeView />
-      </View>
+      <NavigationContainer initialRouteName="Home">
+        <Stack.Navigator>
+          <Stack.Screen name="Home" component={HomeView} />
+          <Stack.Screen
+            name="ChatRoom"
+            component={Chat}
+            options={({ route }) => ({
+              title: route.params.title,
+              id: route.params.id,
+            })}
+          />
+        </Stack.Navigator>
+      </NavigationContainer>
     </ApolloProvider>
   );
 }
