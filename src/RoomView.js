@@ -1,10 +1,15 @@
-import React from "react";
+import React, { useContext } from "react";
 import { StyleSheet, View, Text, Button } from "react-native";
 
-const RoomView = ({ title }) => {
+const RoomView = ({ item, navigation }) => {
   return (
     <View style={styles.container}>
-      <Button title={title} />
+      <Button
+        title={item.name}
+        onPress={() =>
+          navigation.navigate("ChatRoom", { title: item.name, id: item.id })
+        }
+      />
     </View>
   );
 };
