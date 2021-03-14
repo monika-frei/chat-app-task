@@ -1,6 +1,5 @@
 import React from "react";
-import { StyleSheet, View, Text, FlatList, Dimensions } from "react-native";
-import { useQuery, useSubscription } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import { GET_MESSAGES, MESSAGES_SUBSCRIPTION } from "../queries/index";
 import Chat from "./Chat/Chat";
 
