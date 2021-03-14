@@ -1,8 +1,12 @@
 import React, { useState, useCallback, useEffect } from "react";
 import { GiftedChat } from "react-native-gifted-chat";
 
-const Chat = ({ data }) => {
+const Chat = ({ data, subscribeToMoreMessages }) => {
   const [messages, setMessages] = useState([]);
+
+  useEffect(() => {
+    subscribeToMoreMessages();
+  }, []);
 
   useEffect(() => {
     const dataMessages = data ? data.room.messages : [];
