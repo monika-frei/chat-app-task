@@ -2,7 +2,6 @@ import "react-native-gesture-handler";
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import { StyleSheet, Text, View } from "react-native";
 import {
   ApolloClient,
   InMemoryCache,
@@ -17,6 +16,7 @@ import { createAbsintheSocketLink } from "@absinthe/socket-apollo-link";
 import { Socket as PhoenixSocket } from "phoenix";
 import HomeView from "./src/HomeView/HomeView";
 import ChatView from "./src/ChatView/ChatView";
+import { StyleSheet, View, Text, FlatList, Dimensions } from "react-native";
 
 const httpLink = createHttpLink({
   uri: "https://chat.thewidlarzgroup.com/api/graphql",
@@ -64,18 +64,52 @@ const client = new ApolloClient({
 
 const Stack = createStackNavigator();
 
+function LogoTitle() {
+  return (
+    <Text
+      style={{
+        fontSize: 25,
+        textAlign: "center",
+        fontWeight: "bold",
+        color: "#EAEAF4",
+      }}
+    >
+      Chat with your friends
+    </Text>
+  );
+}
+
 export default function App() {
   return (
     <ApolloProvider client={client}>
       <NavigationContainer initialRouteName="Home">
         <Stack.Navigator>
-          <Stack.Screen name="Home" component={HomeView} />
+          <Stack.Screen
+            name="Home"
+            component={HomeView}
+            options={{
+              headerTitle: (props) => <LogoTitle {...props} />,
+              headerStyle: {
+                backgroundColor: "#1A1E78",
+                borderBottomColor: "#1A1E78",
+                height: 100,
+              },
+            }}
+          />
           <Stack.Screen
             name="ChatRoom"
             component={ChatView}
             options={({ route }) => ({
-              title: route.params.title,
+              title: "",
               id: route.params.id,
+              headerStyle: {
+                backgroundColor: "#1A1E78",
+                height: 100,
+              },
+              headerTintColor: "#6F6D89",
+              headerTitleStyle: {
+                fontWeight: "light",
+              },
             })}
           />
         </Stack.Navigator>
@@ -83,10 +117,3 @@ export default function App() {
     </ApolloProvider>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#1A1E78",
-  },
-});
