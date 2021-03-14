@@ -13,6 +13,7 @@ const ChatView = ({ route }) => {
   return (
     <Chat
       {...result}
+      roomId={id}
       subscribeToMoreMessages={() => {
         subscribeToMore({
           document: MESSAGES_SUBSCRIPTION,
@@ -22,11 +23,15 @@ const ChatView = ({ route }) => {
               return prev;
             }
             const newFeedItem = subscriptionData.data.messageAdded;
-            return Object.assign({}, prev, {
-              room: {
-                messages: [...prev.room.messages, newFeedItem],
+            return Object.assign(
+              {},
+              {
+                room: {
+                  messages: [newFeedItem, ...prev.room.messages],
+                },
               },
-            });
+              prev
+            );
           },
         });
       }}
