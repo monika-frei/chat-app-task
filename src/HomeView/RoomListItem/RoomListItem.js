@@ -9,7 +9,14 @@ const RoomListItem = ({ item, navigation }) => {
       }
     >
       <View style={styles.container}>
-        <Image style={styles.roomImage} source={{ uri: item.roomPic }}></Image>
+        <Image
+          style={styles.roomImage}
+          source={{
+            uri: item.roomPic
+              ? item.roomPic
+              : "https://pixabay.com/get/g652111b54a50747b8fa8814fdce56ad1ef8aba50a37f5b4855925dab0e9e612fc7107684b1a7297426929aa79d9d7b13_640.png",
+          }}
+        ></Image>
         <View style={styles.textContainer}>
           <Text style={styles.text}>{item.name}</Text>
         </View>
@@ -34,6 +41,7 @@ const styles = StyleSheet.create({
     backgroundColor: "red",
     borderRadius: 25,
     marginRight: 5,
+    resizeMode: "cover",
   },
   textContainer: {
     flex: 1,

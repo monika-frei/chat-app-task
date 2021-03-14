@@ -16,7 +16,7 @@ import { createAbsintheSocketLink } from "@absinthe/socket-apollo-link";
 import { Socket as PhoenixSocket } from "phoenix";
 import HomeView from "./src/HomeView/HomeView";
 import ChatView from "./src/ChatView/ChatView";
-import { StyleSheet, View, Text, FlatList, Dimensions } from "react-native";
+import HeaderTitle from "./src/HeaderTitle/HeaderTitle";
 
 const httpLink = createHttpLink({
   uri: "https://chat.thewidlarzgroup.com/api/graphql",
@@ -64,21 +64,6 @@ const client = new ApolloClient({
 
 const Stack = createStackNavigator();
 
-function LogoTitle() {
-  return (
-    <Text
-      style={{
-        fontSize: 25,
-        textAlign: "center",
-        fontWeight: "bold",
-        color: "#EAEAF4",
-      }}
-    >
-      Chat with your friends
-    </Text>
-  );
-}
-
 export default function App() {
   return (
     <ApolloProvider client={client}>
@@ -88,10 +73,9 @@ export default function App() {
             name="Home"
             component={HomeView}
             options={{
-              headerTitle: (props) => <LogoTitle {...props} />,
+              headerTitle: (props) => <HeaderTitle {...props} />,
               headerStyle: {
                 backgroundColor: "#1A1E78",
-                borderBottomColor: "#1A1E78",
                 height: 100,
               },
             }}
@@ -108,7 +92,7 @@ export default function App() {
               },
               headerTintColor: "#6F6D89",
               headerTitleStyle: {
-                fontWeight: "light",
+                fontWeight: "100",
               },
             })}
           />
