@@ -16,6 +16,8 @@ import { createAbsintheSocketLink } from "@absinthe/socket-apollo-link";
 import { Socket as PhoenixSocket } from "phoenix";
 import HomeView from "./src/HomeView/HomeView";
 import ChatView from "./src/ChatView/ChatView";
+import AuthView from "./src/AuthView/AuthView";
+
 import { StyleSheet, View, Text, FlatList, Dimensions } from "react-native";
 
 const httpLink = createHttpLink({
@@ -84,7 +86,7 @@ export default function App() {
     <ApolloProvider client={client}>
       <NavigationContainer initialRouteName="Home">
         <Stack.Navigator>
-          <Stack.Screen
+          {/* <Stack.Screen
             name="Home"
             component={HomeView}
             options={{
@@ -102,6 +104,21 @@ export default function App() {
             options={({ route }) => ({
               title: "",
               id: route.params.id,
+              headerStyle: {
+                backgroundColor: "#1A1E78",
+                height: 100,
+              },
+              headerTintColor: "#6F6D89",
+              headerTitleStyle: {
+                fontWeight: "light",
+              },
+            })}
+          /> */}
+          <Stack.Screen
+            name="Register"
+            component={AuthView}
+            options={() => ({
+              title: "Register new friend!",
               headerStyle: {
                 backgroundColor: "#1A1E78",
                 height: 100,

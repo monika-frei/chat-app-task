@@ -1,5 +1,32 @@
 import { gql } from "@apollo/client";
 
+export const REGISTER_USER = gql`
+  mutation RegisterMessage(
+    $email: String!
+    $firstName: String!
+    $lastName: String!
+    $password: String!
+    $passwordConfirmation: String!
+  ) {
+    registerUser(
+      email: $email
+      firstName: $firstName
+      lastName: $lastName
+      password: $password
+      passwordConfirmation: $passwordConfirmation
+    ) {
+      user {
+        email
+        firstName
+        lastName
+        profilePic
+        id
+        role
+      }
+    }
+  }
+`;
+
 export const GET_ROOMS = gql`
   query GetRooms {
     usersRooms {
